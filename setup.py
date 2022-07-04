@@ -32,7 +32,7 @@ authors_list = [
     'Alexander Dean',
     'Fred Blundun',
     'Paul Boocock',
-    'Matt Miermans'
+    'Matt Miermans',
 ]
 authors_str = ', '.join(authors_list)
 
@@ -43,7 +43,7 @@ authors_email_str = ', '.join(authors_email_list)
 
 setup(
     name='aio-snowplow-tracker',
-    version='1.0.0a3',
+    version='1.0.0',
     author=authors_str,
     author_email=authors_email_str,
     packages=[
@@ -55,7 +55,7 @@ setup(
     url='https://github.com/miermans/aio-snowplow-python-tracker',
     license='Apache License 2.0',
     description='Asyncio Snowplow event tracker for Python. '
-                'Add analytics to your Python and Django apps, webapps and games',
+                'Add analytics to your Python and Django apps, webapps and games.',
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
 
@@ -70,6 +70,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
+        "Framework :: AsyncIO",
     ],
 
     install_requires=[
@@ -79,12 +80,10 @@ setup(
 
     extras_require={
         "celery": [
-            "celery>=4.0,<5.0;python_version<'3.0'",
-            "celery>=4.0;python_version>='3.0'"
+            "celery>=4.0"
         ],
         "redis": [
-            "redis>=2.9.1,<4.0;python_version<'3.0'",
-            "redis>=2.9.1;python_version>='3.0'",
+            "redis>=2.9.1",
             "gevent>=21.1.2"
         ]
     },
