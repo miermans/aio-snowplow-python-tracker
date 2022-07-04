@@ -56,16 +56,16 @@ To install the Snowplow Python Tracker locally, assuming you already have Pip in
 
 .. code-block:: shell
 
-    $ pip install snowplow-tracker --upgrade
+    $ pip install aio-snowplow-tracker --upgrade
 
 To install the Snowplow Tracker with extras:
 
 .. code-block:: shell
 
     # Redis extra
-    $ pip install snowplow-tracker[redis]
+    $ pip install aio-snowplow-tracker[redis]
     # Celery extra
-    $ pip install snowplow-tracker[celery]
+    $ pip install aio-snowplow-tracker[celery]
 
 
 Find out more
