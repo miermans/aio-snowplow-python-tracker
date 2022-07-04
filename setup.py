@@ -46,7 +46,12 @@ setup(
     version='1.0.0a3',
     author=authors_str,
     author_email=authors_email_str,
-    packages=['aio_snowplow_tracker', 'aio_snowplow_tracker.test', 'aio_snowplow_tracker.redis', 'aio_snowplow_tracker.celery'],
+    packages=[
+        'aio_snowplow_tracker',
+        'aio_snowplow_tracker.test',
+        'aio_snowplow_tracker.redis',
+        'aio_snowplow_tracker.celery',
+    ],
     url='https://github.com/miermans/aio-snowplow-python-tracker',
     license='Apache License 2.0',
     description='Asyncio Snowplow event tracker for Python. '

@@ -1,6 +1,6 @@
 # Contributing
 
-The Snowplow Python Tracker is maintained by the Engineering team at Snowplow Analytics. We welcome suggestions for improvements and bug fixes to all Snowplow Trackers.  
+The Aio Snowplow Python Tracker is maintained by individual contributors unaffiliated with the team at Snowplow Analytics. We welcome suggestions for improvements and bug fixes to all Snowplow Trackers.  
 
 We are extremely grateful for all contributions we receive, whether that is reporting an issue or a change to the code which can be made in the form of a pull request.
 
@@ -61,12 +61,6 @@ If you feel your pull request has been forgotten, please ping one or more mainta
 ### Getting your pull request merged
 
 If your pull request is fairly chunky, there might be a non-trivial delay between the moment the pull request is approved and the moment it gets merged. This is because your pull request will have been scheduled for a specific milestone which might or might not be actively worked on by a maintainer at the moment.
-
-### Contributor license agreement
-
-We require outside contributors to sign a Contributor license agreement (or CLA) before we can merge their pull requests.  
-You can find more information on the topic in [the dedicated wiki page](https://github.com/snowplow/snowplow/wiki/CLA).  
-The @snowplowcla bot will guide you through the process.
 
 ## Getting in touch
 
