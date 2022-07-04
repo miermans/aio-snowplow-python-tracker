@@ -26,7 +26,7 @@ asyncio Python Analytics for Snowplow
 Overview
 ########
 
-This is a fork of to the official `Snowplow Python Tracker`_ that applies asyncio_ for high-performance event tracking.
+This is a fork of to the official `Snowplow Python Tracker`_ that leverages asyncio_ for high-performance event tracking.
 
 .. _`Snowplow Python Tracker`: https://github.com/snowplow/snowplow-python-tracker
 .. _asyncio: https://realpython.com/async-io-python/
@@ -38,48 +38,60 @@ Example
 
 .. code-block:: python
 
-    from snowplow_tracker import Tracker, Emitter, Subject
+    from aio_snowplow_tracker import Tracker, Emitter, Subject
     import asyncio
 
     async def main():
         e = Emitter('d3rkrsqld9gmqf.cloudfront.net')
         s = Subject().set_user_id('5432')
         t = Tracker(e, subject=s, app_id='example-app')
-        await t.track_page_view('http://example.com', 'Example Page')
+        await t.track_page_view('http://example.com', 'Title')
 
     asyncio.run(main())
 
 
+Installation
+#############
+To install the Snowplow Python Tracker locally, assuming you already have Pip installed:
+
+.. code-block:: shell
+
+    $ pip install aio-snowplow-tracker --upgrade
+
+To install the Snowplow Tracker with extras:
+
+.. code-block:: shell
+
+    # Redis extra
+    $ pip install aio-snowplow-tracker[redis]
+    # Celery extra
+    $ pip install aio-snowplow-tracker[celery]
+
+
 Find out more
 #############
+The official Snowplow Python Tracker documentation is applicable to this library as well, with some minor changes:
 
-+---------------------------------+---------------------------+-----------------------------------+
-| Technical Docs                  | Setup Guide               | Contributing                      |
-+=================================+===========================+===================================+
-| |techdocs|_                     | |setup|_                  | |contributing|                    |
-+---------------------------------+---------------------------+-----------------------------------+
-| `Technical Docs`_               | `Setup Guide`_            | `Contributing`_                   |
-+---------------------------------+---------------------------+-----------------------------------+
+1. :code:`import aio_snowplow_tracker` instead of :code:`import snowplow_tracker`.
+
+2. :code:`await` Tracker calls.
+
++---------------------------------+-----------------------------------+
+| Technical Docs                  | Contributing                      |
++=================================+===================================+
+| |techdocs|_                     | |contributing|                    |
++---------------------------------+-----------------------------------+
+| `Technical Docs`_               | `Contributing`_                   |
++---------------------------------+-----------------------------------+
 
 .. |techdocs| image:: https://d3i6fms1cm1j0i.cloudfront.net/github/images/techdocs.png
 .. |setup| image:: https://d3i6fms1cm1j0i.cloudfront.net/github/images/setup.png
 .. |contributing| image:: https://d3i6fms1cm1j0i.cloudfront.net/github/images/contributing.png
 
 .. _techdocs: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/python-tracker/
-.. _setup: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/python-tracker/setup/
 
 .. _`Technical Docs`: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/python-tracker/
-.. _`Setup Guide`: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/python-tracker/setup/
-.. _`Contributing`: https://github.com/snowplow/snowplow-python-tracker/blob/master/CONTRIBUTING.md
-
-Python Support
-##############
-
-+----------------+--------------------------+
-| Python version | snowplow-tracker version |
-+================+==========================+
-| >=3.7          |           1.0.0          |
-+----------------+--------------------------+
+.. _`Contributing`: https://github.com/miermans/aio-snowplow-python-tracker/blob/master/CONTRIBUTING.md
 
 Maintainer Quickstart
 #######################
