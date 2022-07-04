@@ -43,7 +43,7 @@ authors_email_str = ', '.join(authors_email_list)
 
 setup(
     name='aio-snowplow-tracker',
-    version='1.0.0a4',
+    version='1.0.0',
     author=authors_str,
     author_email=authors_email_str,
     packages=[
