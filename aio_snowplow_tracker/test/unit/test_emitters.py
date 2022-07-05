@@ -126,7 +126,7 @@ class TestEmitters(AsyncTestCase):
         self.assertFalse(e.reached_limit())
         mok_flush.assert_not_called()
 
-    @async_patch('aio_snowplow_tracker.Emitter.flush')
+    @async_patch('aio_snowplow_tracker.Emitter._flush_unsafe')
     async def test_input_flush_byte_limit(self, mok_flush: Any) -> None:
         mok_flush.side_effect = mocked_flush
 
@@ -139,7 +139,7 @@ class TestEmitters(AsyncTestCase):
         self.assertTrue(e.reached_limit())
         self.assertEqual(mok_flush.call_count, 1)
 
-    @async_patch('aio_snowplow_tracker.Emitter.flush')
+    @async_patch('aio_snowplow_tracker.Emitter._flush_unsafe')
     async def test_input_flush_buffer(self, mok_flush: Any) -> None:
         mok_flush.side_effect = mocked_flush
 
@@ -158,7 +158,7 @@ class TestEmitters(AsyncTestCase):
         self.assertTrue(e.reached_limit())
         self.assertEqual(mok_flush.call_count, 1)
 
-    @async_patch('aio_snowplow_tracker.Emitter.flush')
+    @async_patch('aio_snowplow_tracker.Emitter._flush_unsafe')
     async def test_input_bytes_queued(self, mok_flush: Any) -> None:
         mok_flush.side_effect = mocked_flush
 
@@ -172,7 +172,7 @@ class TestEmitters(AsyncTestCase):
         await e.input(nvPairs)
         self.assertEqual(e.bytes_queued, 48)
 
-    @async_patch('aio_snowplow_tracker.Emitter.flush')
+    @async_patch('aio_snowplow_tracker.Emitter._flush_unsafe')
     async def test_input_bytes_post(self, mok_flush: Any) -> None:
         mok_flush.side_effect = mocked_flush
 

@@ -22,6 +22,7 @@
 import re
 import json
 import base64
+from asyncio import gather
 from urllib.parse import unquote_plus
 
 import aiohttp
@@ -130,6 +131,25 @@ async def test_integration_screen_view(snowplow_server: TestServer, default_subj
             }
         }
     }
+
+
+async def test_integration_gather_unstruct_event(snowplow_server: TestServer, default_subject: subject.Subject):
+    t = tracker.Tracker([create_emitter(snowplow_server)], default_subject, encode_base64=False)
+    n_products = 10
+    product_ids = {f"PRODUCT_{i}" for i in range(n_products)}
+    track_coroutines = [
+        t.track_unstruct_event(
+            SelfDescribingJson("iglu:com.acme/viewed_product/jsonschema/2-0-2", {"product_id": product_id})
+        )
+        for product_id in product_ids
+    ]
+
+    await gather(*track_coroutines)
+
+    requests = snowplow_server.app['requests']
+    assert len(requests) == len(product_ids)
+    received_product_ids = {json.loads(r.query["ue_pr"])["data"]["data"]["product_id"] for r in requests}
+    assert product_ids == received_product_ids
 
 
 async def test_integration_struct_event(snowplow_server: TestServer, default_subject: subject.Subject):
