@@ -1,3 +1,11 @@
+Version 1.0.1 (2022-06-04)
+--------------------------
+Fix: Do not send events multiple times when track calls are chained.
+
+Version 1.0.0 (2022-06-03)
+--------------------------
+Release asyncio Snowplow Python library.
+
 Version 1.0.0a3 (2022-06-03)
 --------------------------
 Breaking: Changed import from `snowplow_tracker` to `aio_snowplow_tracker` to support installing both libraries.

@@ -21,7 +21,6 @@
 import asyncio
 import logging
 import time
-import threading
 import aiohttp
 from typing import Optional, Union, Tuple
 
@@ -112,7 +111,7 @@ class Emitter(object):
         self.on_success = on_success
         self.on_failure = on_failure
 
-        self.lock = threading.RLock()
+        self.lock = asyncio.Lock()
 
         self.timer = None
 
@@ -155,7 +154,7 @@ class Emitter(object):
             :param payload:   The name-value pairs for the event
             :type  payload:   dict(string:*)
         """
-        with self.lock:
+        async with self.lock:
             if self.bytes_queued is not None:
                 self.bytes_queued += len(str(payload))
 
@@ -165,7 +164,7 @@ class Emitter(object):
                 self.buffer.append(payload)
 
             if self.reached_limit():
-                await self.flush()
+                await self._flush_unsafe()
 
     def reached_limit(self) -> bool:
         """
@@ -182,11 +181,17 @@ class Emitter(object):
         """
             Sends all events in the buffer to the collector.
         """
-        with self.lock:
-            await self.send_events(self.buffer)
-            self.buffer = []
-            if self.bytes_queued is not None:
-                self.bytes_queued = 0
+        async with self.lock:
+            await self._flush_unsafe()
+
+    async def _flush_unsafe(self) -> None:
+        """
+            Sends all events in the buffer to the collector without locking.
+        """
+        await self.send_events(self.buffer)
+        self.buffer = []
+        if self.bytes_queued is not None:
+            self.bytes_queued = 0
 
     async def http_post(self, data: str) -> bool:
         """
@@ -244,7 +249,7 @@ class Emitter(object):
     async def sync_flush(self) -> None:
         """
             Calls the flush method of the base Emitter class.
-            This is guaranteed to be blocking, not asynchronous.
+            This is guaranteed to be flushed immediately, without buffering.
         """
         logger.debug("Starting synchronous flush...")
         await Emitter.flush(self)
