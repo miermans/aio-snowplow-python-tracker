@@ -211,11 +211,11 @@ class Emitter(object):
             ) as r:
                 post_succeeded = Emitter.is_good_status_code(r.status)
                 logger.log(
-                    level=logging.INFO if post_succeeded else logging.WARNING,
+                    level=logging.INFO if post_succeeded else logging.ERROR,
                     msg=f"GET request finished with status code: {r.status}"
                 )
         except aiohttp.ClientError as e:
-            logger.warning(e)
+            logger.error(e)
         finally:
             if session != self.client_session:
                 await session.close()
@@ -235,11 +235,11 @@ class Emitter(object):
             async with session.get(self.endpoint, params=payload, timeout=self.request_timeout) as r:
                 get_succeeded = Emitter.is_good_status_code(r.status)
                 logger.log(
-                    level=logging.INFO if get_succeeded else logging.WARNING,
+                    level=logging.INFO if get_succeeded else logging.ERROR,
                     msg=f"GET request finished with status code: {r.status}"
                 )
         except aiohttp.ClientError as e:
-            logger.warning(e)
+            logger.error(e)
         finally:
             if session != self.client_session:
                 await session.close()

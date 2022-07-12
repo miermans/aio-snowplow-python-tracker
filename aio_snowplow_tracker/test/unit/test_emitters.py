@@ -309,18 +309,40 @@ class TestEmitters(AsyncTestCase):
         self.assertTrue(get_succeeded)
 
     @async_patch('aio_snowplow_tracker.emitters.aiohttp.ClientSession.post')
-    async def test_http_get_successful(self, mok_post_request: Any) -> None:
+    async def test_http_post_successful(self, mok_post_request: Any) -> None:
         mok_post_request.return_value.__aenter__.return_value = mock.Mock(status=200)
         e = Emitter('0.0.0.0')
         get_succeeded = await e.http_post({"a": "b"})
 
         self.assertTrue(get_succeeded)
 
+    @async_patch('aio_snowplow_tracker.emitters.aiohttp.ClientSession.get')
+    async def test_http_get_400_error(self, mok_get_request: Any) -> None:
+        mok_get_request.return_value.__aenter__.return_value = mock.Mock(status=400)
+        e = Emitter('0.0.0.0')
+
+        with self.assertLogs('aio_snowplow_tracker.emitters', level='ERROR'):
+            get_succeeded = await e.http_get({"a": "b"})
+
+        self.assertFalse(get_succeeded)
+
+    @async_patch('aio_snowplow_tracker.emitters.aiohttp.ClientSession.post')
+    async def test_http_post_successful(self, mok_post_request: Any) -> None:
+        mok_post_request.return_value.__aenter__.return_value = mock.Mock(status=400)
+        e = Emitter('0.0.0.0')
+
+        with self.assertLogs('aio_snowplow_tracker.emitters', level='ERROR'):
+            get_succeeded = await e.http_post({"a": "b"})
+
+        self.assertFalse(get_succeeded)
+
     @async_patch('aio_snowplow_tracker.emitters.aiohttp.ClientSession.post')
     async def test_http_post_connect_timeout_error(self, mok_post_request: Any) -> None:
         mok_post_request.side_effect = ServerTimeoutError
         e = Emitter('0.0.0.0')
-        post_succeeded = await e.http_post("dummy_string")
+
+        with self.assertLogs('aio_snowplow_tracker.emitters', level='ERROR'):
+            post_succeeded = await e.http_post("dummy_string")
 
         self.assertFalse(post_succeeded)
 
@@ -328,7 +350,9 @@ class TestEmitters(AsyncTestCase):
     async def test_http_get_connect_timeout_error(self, mok_get_request: Any) -> None:
         mok_get_request.side_effect = ServerTimeoutError
         e = Emitter('0.0.0.0')
-        get_succeeded = await e.http_get({"a": "b"})
+
+        with self.assertLogs('aio_snowplow_tracker.emitters', level='ERROR'):
+            get_succeeded = await e.http_get({"a": "b"})
 
         self.assertFalse(get_succeeded)
 
